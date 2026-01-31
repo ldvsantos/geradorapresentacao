@@ -7,6 +7,7 @@ import time
 from datetime import datetime
 from hashlib import sha256
 from typing import Any
+from pathlib import Path
 
 import streamlit as st
 import streamlit.components.v1 as components
@@ -42,6 +43,34 @@ if "Falha" in str(quarto_status) or "Erro" in str(quarto_status):
     st.error(f"⚠️ Alerta de Configuração: {quarto_status}")
 
 with st.sidebar.expander("🔧 Diagnóstico do Servidor", expanded=False):
+    def _file_fingerprint(file_path: str) -> dict[str, str]:
+        p = Path(file_path)
+        try:
+            data = p.read_bytes()
+            st_mtime = datetime.fromtimestamp(p.stat().st_mtime).isoformat(timespec="seconds")
+            return {
+                "path": str(p),
+                "exists": "true",
+                "mtime": st_mtime,
+                "sha256_12": sha256(data).hexdigest()[:12],
+                "bytes": str(len(data)),
+            }
+        except Exception as exc:
+            return {
+                "path": str(p),
+                "exists": "false",
+                "error": repr(exc),
+            }
+
+    st.write("**Build (fingerprint)**")
+    st.json(
+        {
+            "streamlit_app.py": _file_fingerprint(__file__),
+            "utils_render.py": _file_fingerprint(os.path.join(os.path.dirname(__file__), "utils_render.py")),
+            "python": sys.version.split(" ")[0],
+            "platform": sys.platform,
+        }
+    )
     st.write(f"**Status Instalação:** {quarto_status}")
     try:
         qbin = get_quarto_binary()

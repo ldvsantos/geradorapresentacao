@@ -348,6 +348,10 @@ Pode colocar uma imagem ou mais texto aqui.
 
 Você pode inserir links externos ou até vídeos (se tiver plugins ou suporte HTML ativado).
 
+**Exemplo de Vídeo do YouTube:**
+
+{{< video https://www.youtube.com/watch?v=wo9vZccmqwc >}}
+
 - [Documentação do Quarto](https://quarto.org)
 - [Site do IFS](http://www.ifs.edu.br)
 

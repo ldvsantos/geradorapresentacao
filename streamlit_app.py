@@ -292,6 +292,7 @@ with st.expander("💡 Dicas Rápidas de Formatação", expanded=False):
         """
     )
 
+
 conteudo_default = """## Contextualização do Estudo
 
 - Psicopedagogia nas instituições escolares
@@ -320,7 +321,8 @@ Estudo de caso com abordagem qualitativa...
 - Trabalhos futuros
 """
 
-conteudo = st.text_area("Editor (Markdown)", value=conteudo_default, height=600)
+st.subheader("📝 Criação dos Slides")
+conteudo = st.text_area("Editor (Markdown)", value=conteudo_default, height=600, label_visibility="collapsed")
 
 st.subheader("🖼️ Imagens")
 _inject_file_uploader_pt_br_styles()

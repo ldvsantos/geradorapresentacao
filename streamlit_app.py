@@ -187,19 +187,24 @@ def _render_quarto(
         _safe_rmtree(tmpdirname)
 
 
-def _split_slides(markdown_text: str) -> list[tuple[str, str]]:
-    lines = markdown_text.splitlines()
-    indices: list[int] = [i for i, line in enumerate(lines) if line.startswith("## ")]
-    if not indices:
-        return [("Conteúdo", markdown_text.strip())]
+def _inject_file_uploader_pt_br_styles() -> None:
+    st.markdown(
+        """
+<style>
+  /* Esconde textos padrões (em inglês) do file_uploader */
+  div[data-testid="stFileUploaderDropzoneInstructions"] { display: none; }
+  div[data-testid="stFileUploaderDropzone"] small { display: none; }
 
-    slides: list[tuple[str, str]] = []
-    for pos, start in enumerate(indices):
-        end = indices[pos + 1] if pos + 1 < len(indices) else len(lines)
-        block_lines = lines[start:end]
-        title = block_lines[0].removeprefix("## ").strip() or f"Slide {pos + 1}"
-        slides.append((title, "\n".join(block_lines).strip()))
-    return slides
+  /* Troca o texto do botão (geralmente 'Browse files') */
+  div[data-testid="stFileUploaderDropzone"] button { font-size: 0 !important; }
+  div[data-testid="stFileUploaderDropzone"] button::after {
+    content: "Selecionar arquivos";
+    font-size: 0.95rem;
+  }
+</style>
+""",
+        unsafe_allow_html=True,
+    )
 
 
 st.set_page_config(page_title="Gerador de Apresentação TCC", layout="wide")
@@ -275,10 +280,14 @@ with col_editor:
     conteudo = st.text_area("Editor (Markdown)", value=conteudo_default, height=420)
 
     st.subheader("🖼️ Imagens")
+    _inject_file_uploader_pt_br_styles()
+    st.caption("Arraste e solte as imagens aqui ou clique em 'Selecionar arquivos'.")
+
     uploaded_files = st.file_uploader(
-        "Envie imagens (PNG/JPG/JPEG/GIF)",
+        "Enviar imagens",
         accept_multiple_files=True,
         type=["png", "jpg", "jpeg", "gif"],
+        label_visibility="collapsed",
     )
 
     if uploaded_files:
@@ -305,7 +314,6 @@ with col_editor:
             st.stop()
 
         assert html_bytes is not None
-
         nome = f"minha_apresentacao_tcc_{datetime.now().strftime('%Y%m%d_%H%M%S')}.html"
         st.success("Apresentação gerada com sucesso!")
         st.download_button(
@@ -316,78 +324,50 @@ with col_editor:
         )
 
 with col_preview:
-    st.subheader("👀 Pré-visualização")
-    tab_rapida, tab_slides = st.tabs(["Rápida", "Slides (Quarto)"])
+    st.subheader("👀 Pré-visualização (Quarto)")
+    st.caption("Slides reais (Reveal.js via Quarto).")
 
-    with tab_rapida:
-        st.caption("Preview instantâneo (não é o Reveal.js final).")
-        slides = _split_slides(conteudo)
-        opcoes = ["(Todos)"] + [t for t, _ in slides]
-        escolha = st.selectbox("Slide", opcoes, index=0)
+    auto = st.checkbox(
+        "Atualizar automaticamente",
+        value=False,
+        help="Atualiza o preview quando houver nova interação na página e o conteúdo tiver mudado.",
+    )
 
-        st.markdown(f"### {titulo}")
-        if subtitulo:
-            st.markdown(subtitulo.replace("<br>", "  \n"))
-        st.caption(instituto)
-        st.divider()
+    chave = sha256(
+        (titulo + "\n" + subtitulo + "\n" + instituto + "\n" + conteudo).encode("utf-8")
+    ).hexdigest()
 
-        if escolha == "(Todos)":
-            for t, md in slides:
-                st.markdown(md)
-                st.divider()
-        else:
-            for t, md in slides:
-                if t == escolha:
-                    st.markdown(md)
-                    break
+    if "preview_quarto" not in st.session_state:
+        st.session_state["preview_quarto"] = {"hash": "", "html": "", "error": "", "debug": {}}
 
-    with tab_slides:
-        st.caption("Preview real em slides via Quarto (pode demorar alguns segundos).")
+    preview_state: dict[str, Any] = st.session_state["preview_quarto"]
 
-        auto = st.checkbox(
-            "Atualizar automaticamente",
-            value=False,
-            help="Atualiza o preview quando houver nova interação na página e o conteúdo tiver mudado.",
-        )
+    clicked = st.button("🔄 Gerar/Atualizar preview")
+    should_render = clicked or (auto and preview_state.get("hash") != chave)
 
-        chave = sha256(
-            (titulo + "\n" + subtitulo + "\n" + instituto + "\n" + conteudo).encode("utf-8")
-        ).hexdigest()
+    if should_render:
+        with st.spinner("Gerando preview (Quarto)..."):
+            html_bytes, err, preview_debug = _render_quarto(
+                titulo=titulo,
+                subtitulo=subtitulo,
+                instituto=instituto,
+                conteudo=conteudo,
+                uploaded_files=uploaded_files,
+            )
 
-        if "preview_quarto" not in st.session_state:
-            st.session_state["preview_quarto"] = {"hash": "", "html": "", "error": "", "debug": {}}
+        preview_state["hash"] = chave
+        preview_state["debug"] = preview_debug
+        preview_state["error"] = err or ""
+        preview_state["html"] = html_bytes.decode("utf-8", errors="replace") if html_bytes else ""
 
-        preview_state: dict[str, Any] = st.session_state["preview_quarto"]
-
-        clicked = st.button("🔄 Gerar/Atualizar preview")
-
-        should_render = clicked or (
-            auto and preview_state.get("hash") != chave
-        )
-
-        if should_render:
-            with st.spinner("Gerando preview (Quarto)..."):
-                html_bytes, err, preview_debug = _render_quarto(
-                    titulo=titulo,
-                    subtitulo=subtitulo,
-                    instituto=instituto,
-                    conteudo=conteudo,
-                    uploaded_files=uploaded_files,
-                )
-
-            preview_state["hash"] = chave
-            preview_state["debug"] = preview_debug
-            preview_state["error"] = err or ""
-            preview_state["html"] = html_bytes.decode("utf-8", errors="replace") if html_bytes else ""
-
-        if preview_state.get("error"):
-            st.error(preview_state.get("error", ""))
-            with st.expander("Ver detalhes técnicos"):
-                debug: dict[str, Any] = preview_state.get("debug") or {}
-                st.code(
-                    f"STDOUT:\n{debug.get('stdout','')}\n\nSTDERR:\n{debug.get('stderr','')}\n\nExitCode: {debug.get('exit_code')}"
-                )
-        elif preview_state.get("html"):
-            components.html(str(preview_state.get("html", "")), height=720, scrolling=True)
-        else:
-            st.info("Clique em 'Gerar/Atualizar preview' para ver os slides aqui.")
+    if preview_state.get("error"):
+        st.error(preview_state.get("error", ""))
+        with st.expander("Ver detalhes técnicos"):
+            debug: dict[str, Any] = preview_state.get("debug") or {}
+            st.code(
+                f"STDOUT:\n{debug.get('stdout','')}\n\nSTDERR:\n{debug.get('stderr','')}\n\nExitCode: {debug.get('exit_code')}"
+            )
+    elif preview_state.get("html"):
+        components.html(str(preview_state.get("html", "")), height=720, scrolling=True)
+    else:
+        st.info("Clique em 'Gerar/Atualizar preview' para ver os slides aqui.")

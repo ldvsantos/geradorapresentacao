@@ -289,6 +289,7 @@ with st.expander("💡 Dicas Rápidas de Formatação", expanded=False):
         - **Código:** Use crases para `código inline` ou triplas crases para blocos de código.
         - **Imagens:** Envie abaixo e use `![](Figuras/arquivo.png)`.
         - **Colunas:** O Sistema permite colunas, mas o Markdown simples é sequencial.
+        - **Documentação Completa:** [Guia do Quarto](https://quarto.org/docs/guide/)
         """
     )
 
@@ -353,7 +354,17 @@ A ferramenta suporta integração direta com vídeos:
 
 {{< video https://www.youtube.com/watch?v=wo9vZccmqwc >}}
 
-## 8. Considerações Finais
+## 8. Diagrama
+
+```{mermaid}
+flowchart LR
+  A[Hard edge] --> B(Round edge)
+  B --> C{Decision}
+  C --> D[Result one]
+  C --> E[Result two]
+```
+
+## 9. Considerações Finais
 
 A ferramenta demonstra viabilidade técnica e potencial para auxiliar discentes na etapa final de seus cursos.
 """

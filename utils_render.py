@@ -14,7 +14,7 @@ def get_quarto_binary() -> str:
     """Retorna o caminho do executável do Quarto, priorizando instalação local no Linux."""
     # 1. Verifica instalação local (Streamlit Cloud / Linux)
     if os.name == 'posix':
-        QUARTO_VERSION = "1.6.40"
+        QUARTO_VERSION = "1.8.27"
         INSTALL_DIR = Path.home() / ".quarto_local"
         EXTRACTED_FOLDER_NAME = f"quarto-{QUARTO_VERSION}-linux-amd64"
         QUARTO_EXEC = INSTALL_DIR / EXTRACTED_FOLDER_NAME / "bin" / "quarto"
@@ -34,7 +34,7 @@ def setup_quarto_linux():
         return "Windows/Mac detectado (não é Linux)." # Apenas para Linux (Streamlit Cloud)
 
     # Configuração local
-    QUARTO_VERSION = "1.6.40"
+    QUARTO_VERSION = "1.8.27"
     INSTALL_DIR = Path.home() / ".quarto_local"
     EXTRACTED_FOLDER_NAME = f"quarto-{QUARTO_VERSION}-linux-amd64"
     QUARTO_BIN_DIR = INSTALL_DIR / EXTRACTED_FOLDER_NAME / "bin"

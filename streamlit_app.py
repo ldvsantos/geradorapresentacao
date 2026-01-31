@@ -5,8 +5,11 @@ import sys
 import tempfile
 import time
 from datetime import datetime
+from hashlib import sha256
+from typing import Any
 
 import streamlit as st
+import streamlit.components.v1 as components
 
 
 def _copy_template(src: str, dst: str) -> None:
@@ -71,6 +74,132 @@ def _find_rendered_html(work_dir: str) -> str | None:
             return p
 
     return None
+
+
+def _build_qmd_content(titulo: str, subtitulo: str, instituto: str, conteudo: str) -> str:
+    return f"""---
+title: "{titulo}"
+subtitle: "{subtitulo}"
+institute: "{instituto}"
+date: today
+date-format: "D [de] MMMM [de] YYYY"
+lang: pt-BR
+title-slide-attributes:
+  class: title-slide
+format:
+  revealjs:
+    theme: [simple, assets/ufs.scss]
+    css: assets/custom.css
+    logo: assets/logo_IFS.png
+    footer: "IFS | Apresentação do TCC"
+    slide-number: true
+    controls: true
+    width: 1280
+    height: 720
+    transition: slide
+    background-transition: fade
+    preview-links: auto
+---
+
+{conteudo}
+"""
+
+
+def _render_quarto(
+    *,
+    titulo: str,
+    subtitulo: str,
+    instituto: str,
+    conteudo: str,
+    uploaded_files: list[Any] | None,
+) -> tuple[bytes | None, str | None, dict[str, Any]]:
+    base_path = os.path.dirname(os.path.abspath(__file__))
+    template_path = os.path.join(base_path, "template")
+
+    if not os.path.isdir(template_path):
+        return None, "Pasta 'template' não encontrada dentro do projeto.", {}
+
+    tmpdirname = tempfile.mkdtemp(prefix="gerador_apresentacao_")
+    try:
+        work_dir = os.path.join(tmpdirname, "projeto")
+        _copy_template(template_path, work_dir)
+
+        figuras_dir = os.path.join(work_dir, "Figuras")
+        os.makedirs(figuras_dir, exist_ok=True)
+
+        if uploaded_files:
+            for uploaded_file in uploaded_files:
+                out_path = os.path.join(figuras_dir, uploaded_file.name)
+                with open(out_path, "wb") as f:
+                    f.write(uploaded_file.getbuffer())
+
+        qmd_content = _build_qmd_content(titulo, subtitulo, instituto, conteudo)
+        qmd_path = os.path.join(work_dir, "apresentacao.qmd")
+        with open(qmd_path, "w", encoding="utf-8") as f:
+            f.write(qmd_content)
+
+        cmd = [
+            "quarto",
+            "render",
+            "apresentacao.qmd",
+            "--to",
+            "revealjs",
+            "--embed-resources",
+            "--output-dir",
+            ".",
+        ]
+
+        env = os.environ.copy()
+        env["QUARTO_PYTHON"] = sys.executable
+
+        try:
+            result = subprocess.run(
+                cmd,
+                cwd=work_dir,
+                capture_output=True,
+                text=True,
+                encoding="utf-8",
+                check=False,
+                env=env,
+            )
+        except FileNotFoundError:
+            return (
+                None,
+                "Comando 'quarto' não encontrado. Instale o Quarto CLI no servidor.",
+                {"stdout": "", "stderr": "", "exit_code": None},
+            )
+
+        output_file = _find_rendered_html(work_dir)
+        debug: dict[str, Any] = {
+            "stdout": result.stdout,
+            "stderr": result.stderr,
+            "exit_code": result.returncode,
+        }
+
+        if not output_file:
+            return None, "Arquivo HTML não foi gerado.", debug
+
+        with open(output_file, "rb") as f:
+            html_bytes = f.read()
+
+        return html_bytes, None, debug
+    finally:
+        _safe_rmtree(tmpdirname)
+
+
+def _split_slides(markdown_text: str) -> list[tuple[str, str]]:
+    lines = markdown_text.splitlines()
+    indices: list[int] = [i for i, line in enumerate(lines) if line.startswith("## ")]
+    if not indices:
+        return [("Conteúdo", markdown_text.strip())]
+
+    slides: list[tuple[str, str]] = []
+    for pos, start in enumerate(indices):
+        end = indices[pos + 1] if pos + 1 < len(indices) else len(lines)
+        block_lines = lines[start:end]
+        title = block_lines[0].removeprefix("## ").strip() or f"Slide {pos + 1}"
+        slides.append((title, "\n".join(block_lines).strip()))
+    return slides
 
 
 st.set_page_config(page_title="Gerador de Apresentação TCC", layout="wide")
@@ -140,108 +269,42 @@ Estudo de caso com abordagem qualitativa...
 - Trabalhos futuros
 """
 
-conteudo = st.text_area("Editor (Markdown)", value=conteudo_default, height=360)
+col_editor, col_preview = st.columns([0.55, 0.45], gap="large")
 
-st.subheader("🖼️ Imagens")
-uploaded_files = st.file_uploader(
-    "Envie imagens (PNG/JPG/JPEG/GIF)",
-    accept_multiple_files=True,
-    type=["png", "jpg", "jpeg", "gif"],
-)
+with col_editor:
+    conteudo = st.text_area("Editor (Markdown)", value=conteudo_default, height=420)
 
-if uploaded_files:
-    st.write("Copie e cole no texto:")
-    for up_file in uploaded_files:
-        st.code(f"![](Figuras/{up_file.name})", language="markdown")
+    st.subheader("🖼️ Imagens")
+    uploaded_files = st.file_uploader(
+        "Envie imagens (PNG/JPG/JPEG/GIF)",
+        accept_multiple_files=True,
+        type=["png", "jpg", "jpeg", "gif"],
+    )
 
-if st.button("🚀 Gerar Apresentação (HTML)", type="primary"):
-    base_path = os.path.dirname(os.path.abspath(__file__))
-    template_path = os.path.join(base_path, "template")
+    if uploaded_files:
+        st.write("Copie e cole no texto:")
+        for up_file in uploaded_files:
+            st.code(f"![](Figuras/{up_file.name})", language="markdown")
 
-    if not os.path.isdir(template_path):
-        st.error("Pasta 'template' não encontrada dentro do projeto.")
-        st.stop()
-
-    tmpdirname = tempfile.mkdtemp(prefix="gerador_apresentacao_")
-    try:
-        work_dir = os.path.join(tmpdirname, "projeto")
-        _copy_template(template_path, work_dir)
-
-        figuras_dir = os.path.join(work_dir, "Figuras")
-        os.makedirs(figuras_dir, exist_ok=True)
-
-        if uploaded_files:
-            for uploaded_file in uploaded_files:
-                out_path = os.path.join(figuras_dir, uploaded_file.name)
-                with open(out_path, "wb") as f:
-                    f.write(uploaded_file.getbuffer())
-
-        qmd_content = f"""---
-title: "{titulo}"
-subtitle: "{subtitulo}"
-institute: "{instituto}"
-date: today
-date-format: "D [de] MMMM [de] YYYY"
-lang: pt-BR
-title-slide-attributes:
-  class: title-slide
-format:
-  revealjs:
-    theme: [simple, assets/ufs.scss]
-    css: assets/custom.css
-    logo: assets/logo_IFS.png
-    footer: "IFS | Apresentação do TCC"
-    slide-number: true
-    controls: true
-    width: 1280
-    height: 720
-    transition: slide
-    background-transition: fade
-    preview-links: auto
----
-
-{conteudo}
-"""
-
-        qmd_path = os.path.join(work_dir, "apresentacao.qmd")
-        with open(qmd_path, "w", encoding="utf-8") as f:
-            f.write(qmd_content)
-
-        cmd = [
-            "quarto",
-            "render",
-            "apresentacao.qmd",
-            "--to",
-            "revealjs",
-            "--embed-resources",
-        ]
-
+    if st.button("🚀 Gerar Apresentação (HTML)", type="primary"):
         with st.spinner("Renderizando com Quarto..."):
-            try:
-                env = os.environ.copy()
-                env["QUARTO_PYTHON"] = sys.executable
-                result = subprocess.run(
-                    cmd,
-                    cwd=work_dir,
-                    capture_output=True,
-                    text=True,
-                    encoding="utf-8",
-                    check=False,
-                    env=env,
-                )
-            except FileNotFoundError:
-                st.error("Comando 'quarto' não encontrado. Instale o Quarto CLI ou configure no servidor.")
-                st.stop()
+            html_bytes, err, render_debug = _render_quarto(
+                titulo=titulo,
+                subtitulo=subtitulo,
+                instituto=instituto,
+                conteudo=conteudo,
+                uploaded_files=uploaded_files,
+            )
 
-        output_file = _find_rendered_html(work_dir)
-        if not output_file:
-            st.error("Arquivo HTML não foi gerado.")
+        if err:
+            st.error(err)
             with st.expander("Ver detalhes técnicos"):
-                st.code(f"STDOUT:\n{result.stdout}\n\nSTDERR:\n{result.stderr}\n\nExitCode: {result.returncode}")
+                st.code(
+                    f"STDOUT:\n{render_debug.get('stdout','')}\n\nSTDERR:\n{render_debug.get('stderr','')}\n\nExitCode: {render_debug.get('exit_code')}"
+                )
             st.stop()
 
-        with open(output_file, "rb") as f:
-            html_bytes = f.read()
+        assert html_bytes is not None
 
         nome = f"minha_apresentacao_tcc_{datetime.now().strftime('%Y%m%d_%H%M%S')}.html"
         st.success("Apresentação gerada com sucesso!")
@@ -252,5 +315,79 @@ format:
             mime="text/html",
         )
 
-    finally:
-        _safe_rmtree(tmpdirname)
+with col_preview:
+    st.subheader("👀 Pré-visualização")
+    tab_rapida, tab_slides = st.tabs(["Rápida", "Slides (Quarto)"])
+
+    with tab_rapida:
+        st.caption("Preview instantâneo (não é o Reveal.js final).")
+        slides = _split_slides(conteudo)
+        opcoes = ["(Todos)"] + [t for t, _ in slides]
+        escolha = st.selectbox("Slide", opcoes, index=0)
+
+        st.markdown(f"### {titulo}")
+        if subtitulo:
+            st.markdown(subtitulo.replace("<br>", "  \n"))
+        st.caption(instituto)
+        st.divider()
+
+        if escolha == "(Todos)":
+            for t, md in slides:
+                st.markdown(md)
+                st.divider()
+        else:
+            for t, md in slides:
+                if t == escolha:
+                    st.markdown(md)
+                    break
+
+    with tab_slides:
+        st.caption("Preview real em slides via Quarto (pode demorar alguns segundos).")
+
+        auto = st.checkbox(
+            "Atualizar automaticamente",
+            value=False,
+            help="Atualiza o preview quando houver nova interação na página e o conteúdo tiver mudado.",
+        )
+
+        chave = sha256(
+            (titulo + "\n" + subtitulo + "\n" + instituto + "\n" + conteudo).encode("utf-8")
+        ).hexdigest()
+
+        if "preview_quarto" not in st.session_state:
+            st.session_state["preview_quarto"] = {"hash": "", "html": "", "error": "", "debug": {}}
+
+        preview_state: dict[str, Any] = st.session_state["preview_quarto"]
+
+        clicked = st.button("🔄 Gerar/Atualizar preview")
+
+        should_render = clicked or (
+            auto and preview_state.get("hash") != chave
+        )
+
+        if should_render:
+            with st.spinner("Gerando preview (Quarto)..."):
+                html_bytes, err, preview_debug = _render_quarto(
+                    titulo=titulo,
+                    subtitulo=subtitulo,
+                    instituto=instituto,
+                    conteudo=conteudo,
+                    uploaded_files=uploaded_files,
+                )
+
+            preview_state["hash"] = chave
+            preview_state["debug"] = preview_debug
+            preview_state["error"] = err or ""
+            preview_state["html"] = html_bytes.decode("utf-8", errors="replace") if html_bytes else ""
+
+        if preview_state.get("error"):
+            st.error(preview_state.get("error", ""))
+            with st.expander("Ver detalhes técnicos"):
+                debug: dict[str, Any] = preview_state.get("debug") or {}
+                st.code(
+                    f"STDOUT:\n{debug.get('stdout','')}\n\nSTDERR:\n{debug.get('stderr','')}\n\nExitCode: {debug.get('exit_code')}"
+                )
+        elif preview_state.get("html"):
+            components.html(str(preview_state.get("html", "")), height=720, scrolling=True)
+        else:
+            st.info("Clique em 'Gerar/Atualizar preview' para ver os slides aqui.")

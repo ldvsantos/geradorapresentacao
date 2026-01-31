@@ -1,6 +1,7 @@
 import os
 import shutil
 import subprocess
+import sys
 import tempfile
 import time
 from datetime import datetime
@@ -207,6 +208,8 @@ format:
 
         with st.spinner("Renderizando com Quarto..."):
             try:
+                env = os.environ.copy()
+                env["QUARTO_PYTHON"] = sys.executable
                 result = subprocess.run(
                     cmd,
                     cwd=work_dir,
@@ -214,6 +217,7 @@ format:
                     text=True,
                     encoding="utf-8",
                     check=False,
+                    env=env,
                 )
             except FileNotFoundError:
                 st.error("Comando 'quarto' não encontrado. Instale o Quarto CLI ou configure no servidor.")

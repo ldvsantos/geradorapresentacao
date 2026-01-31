@@ -5,6 +5,7 @@ import tempfile
 import subprocess
 import shutil
 import time
+import sys
 from datetime import datetime
 from werkzeug.utils import secure_filename
 
@@ -170,13 +171,16 @@ format:
             ]
             
             try:
+                env = os.environ.copy()
+                env["QUARTO_PYTHON"] = sys.executable
                 result = subprocess.run(
                     cmd,
                     cwd=work_dir,
                     capture_output=True,
                     text=True,
                     encoding='utf-8',
-                    check=False
+                    check=False,
+                    env=env,
                 )
                 
                 # Verificar se o arquivo foi gerado (pode ir para _site/ dependendo do _quarto.yml)

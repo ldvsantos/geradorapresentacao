@@ -11,6 +11,15 @@ from typing import Any
 import streamlit as st
 import streamlit.components.v1 as components
 
+# Importar utils
+try:
+    from utils_render import setup_quarto_linux
+    # Tenta configurar o Quarto no ambiente Linux (Streamlit Cloud)
+    setup_quarto_linux()
+except ImportError:
+    pass # Falha silenciosa se o arquivo não existir ou erro de import
+
+
 
 def _copy_template(src: str, dst: str) -> None:
     ignore = shutil.ignore_patterns(

@@ -4,7 +4,64 @@ import subprocess
 import sys
 import tempfile
 import time
+import requests
+import tarfile
 from typing import Any
+from pathlib import Path
+
+def setup_quarto_linux():
+    """Baixa e configura o Quarto CLI no Linux se não estiver presente."""
+    if os.name != 'posix':
+        return  # Apenas para Linux (Streamlit Cloud)
+
+    if shutil.which('quarto'):
+        return  # Já instalado ou no PATH
+
+    # Configuração local
+    QUARTO_VERSION = "1.6.40"
+    # Instalar na home do usuário para ter permissão de escrita
+    INSTALL_DIR = Path.home() / ".quarto_local"
+    
+    # A estrutura dentro do tar é quarto-{version}-linux-amd64/bin/quarto
+    EXTRACTED_FOLDER_NAME = f"quarto-{QUARTO_VERSION}-linux-amd64"
+    QUARTO_BIN_DIR = INSTALL_DIR / EXTRACTED_FOLDER_NAME / "bin"
+    QUARTO_EXEC = QUARTO_BIN_DIR / "quarto"
+    
+    # Se já existir o executável no local esperado, apenas adiciona ao PATH e retorna
+    if QUARTO_EXEC.exists():
+        os.environ["PATH"] = str(QUARTO_BIN_DIR) + os.pathsep + os.environ["PATH"]
+        return
+
+    print(f"Instalando Quarto CLI v{QUARTO_VERSION} no Linux...")
+    url = f"https://github.com/quarto-dev/quarto-cli/releases/download/v{QUARTO_VERSION}/quarto-{QUARTO_VERSION}-linux-amd64.tar.gz"
+    
+    try:
+        response = requests.get(url, stream=True)
+        if response.status_code == 200:
+            INSTALL_DIR.mkdir(parents=True, exist_ok=True)
+            tar_path = INSTALL_DIR / "quarto.tar.gz"
+            
+            with open(tar_path, "wb") as f:
+                for chunk in response.iter_content(chunk_size=8192):
+                    f.write(chunk)
+            
+            with tarfile.open(tar_path, "r:gz") as tar:
+                tar.extractall(path=INSTALL_DIR)
+            
+            if QUARTO_EXEC.exists():
+                os.environ["PATH"] = str(QUARTO_BIN_DIR) + os.pathsep + os.environ["PATH"]
+                QUARTO_EXEC.chmod(0o755) # Garante permissão de execução
+                print("Quarto configurado com sucesso.")
+            else:
+                print(f"Algo deu errado. executável não encontrado em {QUARTO_EXEC}")
+            
+            # Limpeza do tar
+            if tar_path.exists():
+                os.remove(tar_path)
+        else:
+            print(f"Erro ao baixar Quarto: Status {response.status_code}")
+    except Exception as e:
+        print(f"Erro na instalação do Quarto: {e}")
 
 def copy_template(src: str, dst: str) -> None:
     ignore = shutil.ignore_patterns(

@@ -35,8 +35,10 @@ def main():
         # Quarto gera 'apresentacao.html' ou 'index.html' dependendo da config.
         # O script utils_render copia como index.html para output_dir.
         
-        # Precisamos garantir que arquivos estáticos também vão
-        # O Quarto com --embed-resources coloca tudo num arquivo só, o que é ótimo para Pages simples.
+        # Cria arquivo .nojekyll para evitar que o GitHub Pages tente processar com Jekyll
+        # (Isso previne erros com pastas que comecam com _ como _extensions ou _site)
+        with open(os.path.join(output_dir, ".nojekyll"), "w") as f:
+            f.write("")
         
         print("✅ Site gerado com sucesso!")
         print(f"👉 Abra {output_dir}/index.html para testar.")

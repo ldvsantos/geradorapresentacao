@@ -24,9 +24,12 @@ Thumbs.db
 # Quarto / outputs
 .quarto/
 _site/
-*.html
 *.pdf
 *.log
+
+# Allow html in docs for Github Pages
+*.html
+!docs/*.html
 
 # Temp/archives
 *.zip

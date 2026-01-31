@@ -288,7 +288,7 @@ with st.expander("💡 Dicas Rápidas de Formatação", expanded=False):
         - **Citações:** Use `> Texto citado` para criar um bloco de destaque.
         - **Código:** Use crases para `código inline` ou triplas crases para blocos de código.
         - **Imagens:** Envie abaixo e use `![](Figuras/arquivo.png)`.
-        - **Colunas:** O Quarto permite colunas, mas o Markdown simples é sequencial.
+        - **Colunas:** O Sistema permite colunas, mas o Markdown simples é sequencial.
         """
     )
 
@@ -313,6 +313,45 @@ Desenvolver um protótipo de sistema para...
 ## Metodologia
 
 Estudo de caso com abordagem qualitativa...
+
+## Tabelas e Dados
+
+| Item | Descrição | Valor |
+|------|-----------|-------|
+| 01   | Análise   | 100%  |
+| 02   | Design    | 80%   |
+| 03   | Testes    | 50%   |
+
+## Slide com Duas Colunas
+
+:::: {.columns}
+
+::: {.column width="50%"}
+**Coluna da Esquerda**
+
+- Tópico 1
+- Tópico 2
+- Explicação detalhada
+:::
+
+::: {.column width="50%"}
+**Coluna da Direita**
+
+Pode colocar uma imagem ou mais texto aqui.
+
+![](https://placeholder.pics/svg/300x200)
+:::
+
+::::
+
+## Multimídia e Links
+
+Você pode inserir links externos ou até vídeos (se tiver plugins ou suporte HTML ativado).
+
+- [Documentação do Quarto](https://quarto.org)
+- [Site do IFS](http://www.ifs.edu.br)
+
+> "A educação é a arma mais poderosa que você pode usar para mudar o mundo." - Nelson Mandela
 
 ## Considerações Finais
 

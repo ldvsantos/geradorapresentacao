@@ -359,12 +359,6 @@ with col_preview:
     st.subheader("👀 Pré-visualização")
     st.caption("Slides (Reveal.js via Quarto).")
 
-    tela_cheia = st.checkbox(
-        "Preview em tela cheia",
-        value=False,
-        help="Expande o preview para ocupar a largura total da página.",
-    )
-
     auto = st.checkbox(
         "Atualizar automaticamente",
         value=False,
@@ -406,18 +400,12 @@ with col_preview:
                 f"STDOUT:\n{debug.get('stdout','')}\n\nSTDERR:\n{debug.get('stderr','')}\n\nExitCode: {debug.get('exit_code')}"
             )
     elif preview_state.get("html"):
-        st.caption("Dica: clique no preview e use as setas ← → (ou espaço) para avançar.")
-        components.html(str(preview_state.get("html", "")), height=720, scrolling=False)
+        st.success("Preview gerado. Veja abaixo em tela cheia.")
     else:
         st.info("Clique em 'Gerar/Atualizar preview' para ver os slides aqui.")
 
-if (
-    'tela_cheia' in locals()
-    and tela_cheia
-    and "preview_quarto" in st.session_state
-    and isinstance(st.session_state["preview_quarto"], dict)
-    and st.session_state["preview_quarto"].get("html")
-):
+if preview_state.get("html"):
     st.divider()
-    st.subheader("🖥️ Preview em tela cheia")
-    components.html(str(st.session_state["preview_quarto"].get("html", "")), height=860, scrolling=False)
+    st.subheader("🖥️ Preview")
+    st.caption("Dica: clique no preview e use as setas ← → (ou espaço) para avançar.")
+    components.html(str(preview_state.get("html", "")), height=860, scrolling=False)

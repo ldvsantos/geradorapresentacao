@@ -246,6 +246,37 @@ st.markdown(
 <style>
     div[data-testid="stToolbar"] { visibility: hidden; height: 0; }
     div[data-testid="stDecoration"] { visibility: hidden; height: 0; }
+
+    /* Visual mais “site” */
+    .stApp { background: #f6f7fb; }
+    div.block-container { max-width: 1200px; padding-top: 2rem; padding-bottom: 3rem; }
+    h1 { font-size: 1.9rem; margin-bottom: 0.25rem; }
+
+    /* Seções / cards */
+    div[data-testid="stExpander"],
+    div[data-testid="stVerticalBlock"] div[data-testid="stMarkdownContainer"] + div[data-testid="stTextArea"],
+    div[data-testid="stVerticalBlock"] div[data-testid="stMarkdownContainer"] + div[data-testid="stTextInput"] {
+        border-radius: 14px;
+    }
+
+    div[data-testid="stExpander"] {
+        background: #ffffff;
+        border: 1px solid #e7e7ef;
+        border-radius: 14px;
+        padding: 0.25rem 0.75rem;
+        box-shadow: 0 8px 24px rgba(16, 24, 40, 0.06);
+    }
+
+    /* Botões */
+    .stButton > button {
+        border-radius: 10px;
+        padding: 0.6rem 1rem;
+    }
+
+    /* Inputs */
+    textarea, input {
+        border-radius: 10px !important;
+    }
 </style>
 """,
         unsafe_allow_html=True,
@@ -254,20 +285,28 @@ st.markdown(
 st.title("🎓 Gerador de Apresentação TCC")
 st.caption("Crie sua apresentação baseada no template oficial do IFS. Código gratuito e controle total do projeto.")
 
-with st.expander("📋 Slide de Título", expanded=True):
-    titulo = st.text_area(
-        "Título",
-        "DESENVOLVIMENTO DE UM PROTÓTIPO DE SISTEMA PARA APOIO ÀS ATIVIDADES PSICOPEDAGÓGICAS NO INSTITUTO FEDERAL DE SERGIPE",
-        height=120,
-        key="titulo",
-    )
+with st.expander("📋 Slide de Título", expanded=False):
+    col_titulo, col_instituto = st.columns([0.72, 0.28], gap="medium")
+    with col_titulo:
+        titulo = st.text_area(
+            "Título",
+            "DESENVOLVIMENTO DE UM PROTÓTIPO DE SISTEMA PARA APOIO ÀS ATIVIDADES PSICOPEDAGÓGICAS NO INSTITUTO FEDERAL DE SERGIPE",
+            height=80,
+            key="titulo",
+        )
+    with col_instituto:
+        instituto = st.text_input(
+            "Instituto",
+            "Instituto Federal de Sergipe",
+            key="instituto",
+        )
+
     subtitulo = st.text_area(
         "Subtítulo (use <br> para quebra de linha)",
         "Discente: Seu Nome<br>Orientador: Nome do Orientador<br>Coorientadora: Nome da Coorientadora",
-        height=100,
+        height=80,
         key="subtitulo",
     )
-    instituto = st.text_input("Instituto", "Instituto Federal de Sergipe", key="instituto")
 
 st.subheader("📝 Conteúdo dos Slides")
 st.markdown(
@@ -310,7 +349,7 @@ Estudo de caso com abordagem qualitativa...
 col_editor, col_preview = st.columns([0.55, 0.45], gap="large")
 
 with col_editor:
-    conteudo = st.text_area("Editor (Markdown)", value=conteudo_default, height=420)
+    conteudo = st.text_area("Editor (Markdown)", value=conteudo_default, height=360)
 
     st.subheader("🖼️ Imagens")
     _inject_file_uploader_pt_br_styles()
@@ -409,4 +448,4 @@ if preview_state.get("html"):
     st.divider()
     st.subheader("🖥️ Preview")
     st.caption("Dica: clique no preview e use as setas ← → (ou espaço) para avançar.")
-    components.html(str(preview_state.get("html", "")), height=860, scrolling=False)
+    components.html(str(preview_state.get("html", "")), height=720, scrolling=False)

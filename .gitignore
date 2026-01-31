@@ -34,3 +34,4 @@ _site/
 # Temp/archives
 *.zip
 *.tar.gz
+.qodo/

@@ -191,16 +191,48 @@ def _inject_file_uploader_pt_br_styles() -> None:
     st.markdown(
         """
 <style>
-  /* Esconde textos padrões (em inglês) do file_uploader */
-  div[data-testid="stFileUploaderDropzoneInstructions"] { display: none; }
-  div[data-testid="stFileUploaderDropzone"] small { display: none; }
+    /*
+        Streamlit não tem i18n nativo para o file_uploader.
+        Então escondemos textos padrão e substituímos o label do botão por CSS.
+        (Seletores duplicados para cobrir variações entre versões.)
+    */
 
-  /* Troca o texto do botão (geralmente 'Browse files') */
-  div[data-testid="stFileUploaderDropzone"] button { font-size: 0 !important; }
-  div[data-testid="stFileUploaderDropzone"] button::after {
-    content: "Selecionar arquivos";
-    font-size: 0.95rem;
-  }
+    /* Esconde instruções/limites (normalmente em inglês) */
+    div[data-testid="stFileUploaderDropzoneInstructions"],
+    div[data-testid="stFileUploader"] div[data-testid="stFileUploaderDropzoneInstructions"],
+    .stFileUploader div[data-testid="stFileUploaderDropzoneInstructions"] {
+        display: none !important;
+    }
+
+    div[data-testid="stFileUploaderDropzone"] small,
+    div[data-testid="stFileUploader"] div[data-testid="stFileUploaderDropzone"] small,
+    .stFileUploader div[data-testid="stFileUploaderDropzone"] small {
+        display: none !important;
+    }
+
+    /* Troca o texto do botão (geralmente 'Browse files') */
+    div[data-testid="stFileUploaderDropzone"] button,
+    div[data-testid="stFileUploader"] div[data-testid="stFileUploaderDropzone"] button,
+    .stFileUploader div[data-testid="stFileUploaderDropzone"] button {
+        font-size: 0 !important;
+        text-shadow: none !important;
+    }
+
+    div[data-testid="stFileUploaderDropzone"] button *,
+    div[data-testid="stFileUploader"] div[data-testid="stFileUploaderDropzone"] button *,
+    .stFileUploader div[data-testid="stFileUploaderDropzone"] button * {
+        display: none !important;
+    }
+
+    div[data-testid="stFileUploaderDropzone"] button::after,
+    div[data-testid="stFileUploader"] div[data-testid="stFileUploaderDropzone"] button::after,
+    .stFileUploader div[data-testid="stFileUploaderDropzone"] button::after {
+        content: "Selecionar arquivos";
+        display: inline-block;
+        color: inherit;
+        font-size: 0.95rem;
+        font-weight: 600;
+    }
 </style>
 """,
         unsafe_allow_html=True,
@@ -324,8 +356,14 @@ with col_editor:
         )
 
 with col_preview:
-    st.subheader("👀 Pré-visualização (Quarto)")
-    st.caption("Slides reais (Reveal.js via Quarto).")
+    st.subheader("👀 Pré-visualização")
+    st.caption("Slides (Reveal.js via Quarto).")
+
+    tela_cheia = st.checkbox(
+        "Preview em tela cheia",
+        value=False,
+        help="Expande o preview para ocupar a largura total da página.",
+    )
 
     auto = st.checkbox(
         "Atualizar automaticamente",
@@ -368,6 +406,18 @@ with col_preview:
                 f"STDOUT:\n{debug.get('stdout','')}\n\nSTDERR:\n{debug.get('stderr','')}\n\nExitCode: {debug.get('exit_code')}"
             )
     elif preview_state.get("html"):
-        components.html(str(preview_state.get("html", "")), height=720, scrolling=True)
+        st.caption("Dica: clique no preview e use as setas ← → (ou espaço) para avançar.")
+        components.html(str(preview_state.get("html", "")), height=720, scrolling=False)
     else:
         st.info("Clique em 'Gerar/Atualizar preview' para ver os slides aqui.")
+
+if (
+    'tela_cheia' in locals()
+    and tela_cheia
+    and "preview_quarto" in st.session_state
+    and isinstance(st.session_state["preview_quarto"], dict)
+    and st.session_state["preview_quarto"].get("html")
+):
+    st.divider()
+    st.subheader("🖥️ Preview em tela cheia")
+    components.html(str(st.session_state["preview_quarto"].get("html", "")), height=860, scrolling=False)

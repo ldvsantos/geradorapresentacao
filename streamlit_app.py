@@ -352,7 +352,7 @@ Desenvolver uma ferramenta web intuitiva para geração automática de apresenta
 
 A ferramenta suporta integração direta com vídeos. Defina `width` e `height` para ajustar o tamanho:
 
-{{< video https://www.youtube.com/watch?v=wo9vZccmqwc width="100%" height="550" >}}
+{{< video https://www.youtube.com/watch?v=wo9vZccmqwc width="100%" height="500" >}}
 
 ## 8. Slide com Rolagem (Scrollable) {.scrollable}
 
@@ -439,7 +439,7 @@ O Quarto renderiza equações perfeitamente usando sintaxe LaTeX:
 
 **Bloco de Equação:**
 $$
-\frac{\partial \rho}{\partial t} + \nabla \cdot (\rho \mathbf{v}) = 0
+\\frac{\\partial \\rho}{\\partial t} + \\nabla \\cdot (\\rho \\mathbf{v}) = 0
 $$
 
 ## 13. Código com Destaque

@@ -75,6 +75,16 @@ def _find_rendered_html(work_dir: str) -> str | None:
 
 st.set_page_config(page_title="Gerador de Apresentação TCC", layout="wide")
 
+st.markdown(
+        """
+<style>
+    div[data-testid="stToolbar"] { visibility: hidden; height: 0; }
+    div[data-testid="stDecoration"] { visibility: hidden; height: 0; }
+</style>
+""",
+        unsafe_allow_html=True,
+)
+
 st.title("🎓 Gerador de Apresentação TCC")
 st.caption("Crie sua apresentação baseada no template oficial do IFS. Código gratuito e controle total do projeto.")
 

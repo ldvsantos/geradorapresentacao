@@ -254,19 +254,20 @@ st.markdown(
 st.title("🎓 Gerador de Apresentação TCC")
 st.caption("Crie sua apresentação baseada no template oficial do IFS. Código gratuito e controle total do projeto.")
 
-with st.sidebar:
-    st.header("📋 Slide de Título")
+with st.expander("📋 Slide de Título", expanded=True):
     titulo = st.text_area(
         "Título",
         "DESENVOLVIMENTO DE UM PROTÓTIPO DE SISTEMA PARA APOIO ÀS ATIVIDADES PSICOPEDAGÓGICAS NO INSTITUTO FEDERAL DE SERGIPE",
         height=120,
+        key="titulo",
     )
     subtitulo = st.text_area(
         "Subtítulo (use <br> para quebra de linha)",
         "Discente: Seu Nome<br>Orientador: Nome do Orientador<br>Coorientadora: Nome da Coorientadora",
         height=100,
+        key="subtitulo",
     )
-    instituto = st.text_input("Instituto", "Instituto Federal de Sergipe")
+    instituto = st.text_input("Instituto", "Instituto Federal de Sergipe", key="instituto")
 
 st.subheader("📝 Conteúdo dos Slides")
 st.markdown(

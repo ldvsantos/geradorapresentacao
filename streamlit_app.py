@@ -259,7 +259,7 @@ with st.expander("📋 Slide de Título", expanded=True):
     with col_titulo:
         titulo = st.text_area(
             "Título",
-            "DESENVOLVIMENTO DE UM PROTÓTIPO DE SISTEMA PARA APOIO ÀS ATIVIDADES PSICOPEDAGÓGICAS NO INSTITUTO FEDERAL DE SERGIPE",
+            "DESENVOLVIMENTO DE UM SISTEMA WEB PARA APOIO À CRIAÇÃO DE APRESENTAÇÕES DE TCC NO INSTITUTO FEDERAL DE SERGIPE",
             height=80,
             key="titulo",
         )
@@ -293,75 +293,69 @@ with st.expander("💡 Dicas Rápidas de Formatação", expanded=False):
     )
 
 
-conteudo_default = """## Contextualização do Estudo
+conteudo_default = """## 1. Contextualização
 
-- Psicopedagogia nas instituições escolares
-- Educação inclusiva 
-- Atendimento psicopedagógico no IFS
-- Necessidade de organização das informações
+- Padronização de documentos acadêmicos no IFS.
+- Dificuldades no uso de ferramentas complexas (LaTeX) ou manuais (PowerPoint).
+- Necessidade de automação para foco no conteúdo.
 
-## Objetivos
+## 2. Problema de Pesquisa
+
+> "Como facilitar a criação de slides para TCC garantindo a conformidade com as normas visuais do instituto?"
+
+## 3. Objetivos
 
 ### Objetivo Geral
-Desenvolver um protótipo de sistema para...
+Desenvolver uma ferramenta web intuitiva para geração automática de apresentações.
 
 ### Objetivos Específicos
-- Mapear processos
-- Desenvolver sistema
-- Validar protótipo
+- Simplificar a formatação através de Markdown.
+- Garantir a identidade visual do IFS.
+- Permitir exportação em HTML interativo (Reveal.js).
 
-## Metodologia
+## 4. Metodologia
 
-Estudo de caso com abordagem qualitativa...
+- **Backend:** Python + Streamlit.
+- **Motor de Renderização:** Quarto CLI.
+- **Frontend:** HTML5 + CSS3 (Sass).
 
-## Tabelas e Dados
+## 5. Cronograma e Resultados
 
-| Item | Descrição | Valor |
-|------|-----------|-------|
-| 01   | Análise   | 100%  |
-| 02   | Design    | 80%   |
-| 03   | Testes    | 50%   |
+| Etapa | Status | Prazo |
+|-------|--------|-------|
+| Levantamento | Concluído | Jan/24 |
+| Prototipagem | Concluído | Fev/24 |
+| Desenvolvimento| Em andamento | Mar/24 |
 
-## Slide com Duas Colunas
+## 6. Exemplo de Layout em Colunas
 
 :::: {.columns}
 
 ::: {.column width="50%"}
-**Coluna da Esquerda**
+**Vantagens do Sistema**
 
-- Tópico 1
-- Tópico 2
-- Explicação detalhada
+- Foco no texto
+- Layout automático
+- Responsivo
 :::
 
 ::: {.column width="50%"}
-**Coluna da Direita**
+**Tecnologias**
 
-Pode colocar uma imagem ou mais texto aqui.
-
-![](https://placeholder.pics/svg/300x200)
+![](https://placeholder.pics/svg/300x200/DEDEDE/555555/Python+Streamlit)
 :::
 
 ::::
 
-## Multimídia e Links
+## 7. Multimídia
 
-Você pode inserir links externos ou até vídeos (se tiver plugins ou suporte HTML ativado).
-
-**Exemplo de Vídeo do YouTube:**
+A ferramenta suporta integração direta com vídeos:
 
 {{< video https://www.youtube.com/watch?v=wo9vZccmqwc >}}
 
-- [Documentação do Quarto](https://quarto.org)
-- [Site do IFS](http://www.ifs.edu.br)
+## 8. Considerações Finais
 
-> "A educação é a arma mais poderosa que você pode usar para mudar o mundo." - Nelson Mandela
-
-## Considerações Finais
-
-- Principais resultados
-- Contribuições do trabalho
-- Trabalhos futuros
+A ferramenta demonstra viabilidade técnica e potencial para auxiliar discentes na etapa final de seus cursos.
 """
 
 st.subheader("📝 Criação dos Slides")

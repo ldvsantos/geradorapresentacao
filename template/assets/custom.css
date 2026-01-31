@@ -30,7 +30,11 @@
 
 .reveal .slides section:not(#title-slide):not(.end-slide) {
   /* Evita que o conteúdo “entre” no rodapé fixo */
-  padding-bottom: calc(var(--ifs-footer-height) + 14px) !important;
+  /* Aumentando para 50px de padding inferior para garantir que nada desça abaixo do rodapé */
+  padding-bottom: 50px !important; 
+  /* Força a altura máxima para não invadir o rodapé também */
+  height: calc(100% - 50px) !important;
+  box-sizing: border-box !important;
 }
 
 .reveal h2 {

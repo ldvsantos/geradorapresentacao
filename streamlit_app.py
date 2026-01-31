@@ -328,7 +328,7 @@ with col_editor:
             st.code(f"![](Figuras/{up_file.name})", language="markdown")
 
     if st.button("🚀 Gerar Apresentação (HTML)", type="primary"):
-        with st.spinner("Renderizando com Quarto..."):
+        with st.spinner("Gerando a apresentação..."):
             html_bytes, err, render_debug = _render_quarto(
                 titulo=titulo,
                 subtitulo=subtitulo,
@@ -357,7 +357,7 @@ with col_editor:
 
 with col_preview:
     st.subheader("👀 Pré-visualização")
-    st.caption("Slides (Reveal.js via Quarto).")
+    st.caption("Slides (apresentação interativa).")
 
     auto = st.checkbox(
         "Atualizar automaticamente",
@@ -378,7 +378,7 @@ with col_preview:
     should_render = clicked or (auto and preview_state.get("hash") != chave)
 
     if should_render:
-        with st.spinner("Gerando preview (Quarto)..."):
+        with st.spinner("Gerando preview..."):
             html_bytes, err, preview_debug = _render_quarto(
                 titulo=titulo,
                 subtitulo=subtitulo,

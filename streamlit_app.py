@@ -12,12 +12,15 @@ import streamlit as st
 import streamlit.components.v1 as components
 
 # Importar utils
+quarto_status = "Não iniciado"
 try:
-    from utils_render import setup_quarto_linux
+    from utils_render import setup_quarto_linux, get_quarto_binary
     # Tenta configurar o Quarto no ambiente Linux (Streamlit Cloud)
-    setup_quarto_linux()
+    quarto_status = setup_quarto_linux()
 except ImportError:
-    pass # Falha silenciosa se o arquivo não existir ou erro de import
+    quarto_status = "Erro de importação no utils_render"
+except Exception as e:
+    quarto_status = f"Erro geral: {e}"
 
 # Configuração da página (deve ser a primeira chamada Streamlit)
 st.set_page_config(
@@ -33,6 +36,20 @@ st.markdown("""
     <p style="margin:0; font-family:'Source Sans Pro', sans-serif; font-size: 1.1em; margin-top: 5px; font-weight: 400;">Sistema de Geração de Apresentações - Disciplina TCC</p>
 </div>
 """, unsafe_allow_html=True)
+
+# Debug status (visível apenas se houver erro ou em sidebar)
+if "Falha" in str(quarto_status) or "Erro" in str(quarto_status):
+    st.error(f"⚠️ Alerta de Configuração: {quarto_status}")
+
+with st.sidebar.expander("🔧 Diagnóstico do Servidor", expanded=False):
+    st.write(f"**Status Instalação:** {quarto_status}")
+    try:
+        qbin = get_quarto_binary()
+        st.code(f"Binário: {qbin}")
+        st.write(f"Existe? {os.path.exists(qbin)}")
+        st.write(f"PATH: {os.environ.get('PATH')}")
+    except Exception as e:
+        st.error(f"Erro leitura: {e}")
 
 def _copy_template(src: str, dst: str) -> None:
     ignore = shutil.ignore_patterns(

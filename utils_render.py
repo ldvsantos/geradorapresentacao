@@ -31,7 +31,7 @@ def get_quarto_binary() -> str:
 def setup_quarto_linux():
     """Baixa e configura o Quarto CLI no Linux se não estiver presente."""
     if os.name != 'posix':
-        return  # Apenas para Linux (Streamlit Cloud)
+        return "Windows/Mac detectado (não é Linux)." # Apenas para Linux (Streamlit Cloud)
 
     # Configuração local
     QUARTO_VERSION = "1.6.40"
@@ -40,29 +40,34 @@ def setup_quarto_linux():
     QUARTO_BIN_DIR = INSTALL_DIR / EXTRACTED_FOLDER_NAME / "bin"
     QUARTO_EXEC = QUARTO_BIN_DIR / "quarto"
     
-    # Adiciona ao PATH se existir
+    # Tenta adicionar o PATH imediatamente, caso já exista
     if QUARTO_BIN_DIR.exists():
          os.environ["PATH"] = str(QUARTO_BIN_DIR) + os.pathsep + os.environ["PATH"]
 
-    # Se já existir o executável
     if QUARTO_EXEC.exists():
-        # Garante permissão de execução
+        # Tenta garantir execução
         try:
             QUARTO_EXEC.chmod(0o755)
-        except Exception:
-            pass
-        return
+            # Testa execução rápida
+            subprocess.run([str(QUARTO_EXEC), "--version"], check=True, capture_output=True)
+            return "Quarto já instalado e verificado."
+        except Exception as e:
+            return f"Quarto existe mas falhou verificação: {e}"
 
-    # Se shutil.which encontrar 'quarto' agora (talvez no sistema), retornamos
+    # Se system quarto existir
     if shutil.which('quarto'):
-        return
+        return "Quarto encontrado no PATH do sistema."
 
     print(f"Instalando Quarto CLI v{QUARTO_VERSION} no Linux...")
     url = f"https://github.com/quarto-dev/quarto-cli/releases/download/v{QUARTO_VERSION}/quarto-{QUARTO_VERSION}-linux-amd64.tar.gz"
     
     try:
-        response = requests.get(url, stream=True)
+        response = requests.get(url, stream=True, timeout=30)
         if response.status_code == 200:
+            # Limpa dir anterior se existir (reinstalação limpa)
+            if INSTALL_DIR.exists():
+                shutil.rmtree(INSTALL_DIR)
+                
             INSTALL_DIR.mkdir(parents=True, exist_ok=True)
             tar_path = INSTALL_DIR / "quarto.tar.gz"
             
@@ -75,18 +80,19 @@ def setup_quarto_linux():
             
             if QUARTO_EXEC.exists():
                 os.environ["PATH"] = str(QUARTO_BIN_DIR) + os.pathsep + os.environ["PATH"]
-                QUARTO_EXEC.chmod(0o755) # Garante permissão de execução
-                print("Quarto configurado com sucesso.")
+                QUARTO_EXEC.chmod(0o755) 
+                return f"Instalação do Quarto v{QUARTO_VERSION} realizada com sucesso."
             else:
-                print(f"Algo deu errado. executável não encontrado em {QUARTO_EXEC}")
+                # Debug: listar pastas criadas
+                found = list(INSTALL_DIR.glob("**/*"))
+                return f"Falha: executável não encontrado após extração. Conteúdo de {INSTALL_DIR}: {found}"
             
-            # Limpeza do tar
             if tar_path.exists():
                 os.remove(tar_path)
         else:
-            print(f"Erro ao baixar Quarto: Status {response.status_code}")
+            return f"Erro HTTP {response.status_code} ao baixar Quarto."
     except Exception as e:
-        print(f"Erro na instalação do Quarto: {e}")
+        return f"Exceção na instalação do Quarto: {e}"
 
 def copy_template(src: str, dst: str) -> None:
     ignore = shutil.ignore_patterns(

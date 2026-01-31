@@ -350,9 +350,9 @@ Desenvolver uma ferramenta web intuitiva para geração automática de apresenta
 
 ## 7. Multimídia
 
-A ferramenta suporta integração direta com vídeos:
+A ferramenta suporta integração direta com vídeos. Defina `width` e `height` para ajustar o tamanho:
 
-{{< video https://www.youtube.com/watch?v=wo9vZccmqwc >}}
+{{< video https://www.youtube.com/watch?v=wo9vZccmqwc width="100%" height="550" >}}
 
 ## 8. Slide com Rolagem (Scrollable) {.scrollable}
 
@@ -431,7 +431,39 @@ Você pode colocar títulos nas callouts usando `## Título`.
 Atenção para prazos e normas.
 :::
 
-## 12. Considerações Finais
+## 12. Equações Matemáticas (LaTeX)
+
+O Quarto renderiza equações perfeitamente usando sintaxe LaTeX:
+
+**Equação Inline:** $E = mc^2$
+
+**Bloco de Equação:**
+$$
+\frac{\partial \rho}{\partial t} + \nabla \cdot (\rho \mathbf{v}) = 0
+$$
+
+## 13. Código com Destaque
+
+Você pode destacar linhas específicas do código para focar a explicação (observe as linhas 2 e 4):
+
+```python {code-line-numbers="2,4"}
+import numpy as np
+import matplotlib.pyplot as plt
+
+x = np.linspace(0, 10, 100)
+y = np.sin(x)
+
+plt.plot(x, y)
+plt.show()
+```
+
+## 14. Notas de Rodapé
+
+Podemos adicionar notas de rodapé facilmente para citar fontes ou explicar termos[^1].
+
+[^1]: Esta é a nota de rodapé. Ela aparecerá automaticamente organizada.
+
+## 15. Considerações Finais
 
 A ferramenta demonstra viabilidade técnica e potencial para auxiliar discentes na etapa final de seus cursos.
 """

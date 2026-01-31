@@ -9,27 +9,52 @@ import tarfile
 from typing import Any
 from pathlib import Path
 
+
+def get_quarto_binary() -> str:
+    """Retorna o caminho do executável do Quarto, priorizando instalação local no Linux."""
+    # 1. Verifica instalação local (Streamlit Cloud / Linux)
+    if os.name == 'posix':
+        QUARTO_VERSION = "1.6.40"
+        INSTALL_DIR = Path.home() / ".quarto_local"
+        EXTRACTED_FOLDER_NAME = f"quarto-{QUARTO_VERSION}-linux-amd64"
+        QUARTO_EXEC = INSTALL_DIR / EXTRACTED_FOLDER_NAME / "bin" / "quarto"
+        if QUARTO_EXEC.exists():
+            return str(QUARTO_EXEC)
+
+    # 2. Verifica se está no PATH global
+    if shutil.which('quarto'):
+        return 'quarto'
+    
+    # 3. Retorna 'quarto' como fallback (vai falhar se não existir)
+    return 'quarto'
+
 def setup_quarto_linux():
     """Baixa e configura o Quarto CLI no Linux se não estiver presente."""
     if os.name != 'posix':
         return  # Apenas para Linux (Streamlit Cloud)
 
-    if shutil.which('quarto'):
-        return  # Já instalado ou no PATH
-
     # Configuração local
     QUARTO_VERSION = "1.6.40"
-    # Instalar na home do usuário para ter permissão de escrita
     INSTALL_DIR = Path.home() / ".quarto_local"
-    
-    # A estrutura dentro do tar é quarto-{version}-linux-amd64/bin/quarto
     EXTRACTED_FOLDER_NAME = f"quarto-{QUARTO_VERSION}-linux-amd64"
     QUARTO_BIN_DIR = INSTALL_DIR / EXTRACTED_FOLDER_NAME / "bin"
     QUARTO_EXEC = QUARTO_BIN_DIR / "quarto"
     
-    # Se já existir o executável no local esperado, apenas adiciona ao PATH e retorna
+    # Adiciona ao PATH se existir
+    if QUARTO_BIN_DIR.exists():
+         os.environ["PATH"] = str(QUARTO_BIN_DIR) + os.pathsep + os.environ["PATH"]
+
+    # Se já existir o executável
     if QUARTO_EXEC.exists():
-        os.environ["PATH"] = str(QUARTO_BIN_DIR) + os.pathsep + os.environ["PATH"]
+        # Garante permissão de execução
+        try:
+            QUARTO_EXEC.chmod(0o755)
+        except Exception:
+            pass
+        return
+
+    # Se shutil.which encontrar 'quarto' agora (talvez no sistema), retornamos
+    if shutil.which('quarto'):
         return
 
     print(f"Instalando Quarto CLI v{QUARTO_VERSION} no Linux...")
@@ -192,8 +217,11 @@ def render_quarto(
         with open(qmd_path, "w", encoding="utf-8") as f:
             f.write(qmd_content)
 
+        # Determina o comando do Quarto
+        quarto_cmd = get_quarto_binary()
+
         cmd = [
-            "quarto",
+            quarto_cmd,
             "render",
             "apresentacao.qmd",
             "--to",

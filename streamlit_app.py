@@ -19,7 +19,20 @@ try:
 except ImportError:
     pass # Falha silenciosa se o arquivo não existir ou erro de import
 
+# Configuração da página (deve ser a primeira chamada Streamlit)
+st.set_page_config(
+    page_title="Gerador de Apresentação TCC - IFS Lagarto",
+    page_icon="🎓",
+    layout="wide"
+)
 
+# Barra Superior IFS
+st.markdown("""
+<div style="background-color:#32A041; padding:15px; border-bottom: 5px solid #C8102E; color:white; text-align:center; margin-bottom: 25px; border-radius: 0 0 10px 10px;">
+    <h3 style="margin:0; font-family:'Source Sans Pro', sans-serif; color:white; font-weight: 700;">INSTITUTO FEDERAL DE SERGIPE - CAMPUS LAGARTO</h3>
+    <p style="margin:0; font-family:'Source Sans Pro', sans-serif; font-size: 1.1em; margin-top: 5px; font-weight: 400;">Sistema de Geração de Apresentações - Disciplina TCC</p>
+</div>
+""", unsafe_allow_html=True)
 
 def _copy_template(src: str, dst: str) -> None:
     ignore = shutil.ignore_patterns(
@@ -247,8 +260,6 @@ def _inject_file_uploader_pt_br_styles() -> None:
         unsafe_allow_html=True,
     )
 
-
-st.set_page_config(page_title="Gerador de Apresentação TCC", layout="wide")
 
 st.markdown(
         """

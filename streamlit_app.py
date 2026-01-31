@@ -354,17 +354,84 @@ A ferramenta suporta integração direta com vídeos:
 
 {{< video https://www.youtube.com/watch?v=wo9vZccmqwc >}}
 
-## 8. Diagrama
+## 8. Slide com Rolagem (Scrollable) {.scrollable}
+
+Este slide possui a propriedade `.scrollable`. É útil para conteúdos extensos que excedem a altura do slide. A barra de rolagem aparecerá automaticamente.
+
+1.  Referência bibliográfica 1
+2.  Referência bibliográfica 2
+3.  Referência bibliográfica 3
+4.  Referência bibliográfica 4
+5.  Referência bibliográfica 5
+6.  Referência bibliográfica 6
+7.  Referência bibliográfica 7
+8.  Referência bibliográfica 8
+9.  Referência bibliográfica 9
+10. Referência bibliográfica 10
+11. Referência bibliográfica 11
+12. Referência bibliográfica 12
+
+## 9. Animações (Fragmentos)
+
+Elementos que aparecem sequencialmente ao avançar o slide:
+
+::: {.fragment}
+➡️ **Primeiro Ponto**
+:::
+
+::: {.fragment}
+➡️ **Segundo Ponto**
+:::
+
+::: {.fragment .fade-up}
+🚀 **Texto com animação de subida**
+:::
+
+## 10. Diagramas e Interatividade
+
+::: {.panel-tabset}
+
+### Fluxograma
 
 ```{mermaid}
 flowchart LR
-  A[Hard edge] --> B(Round edge)
-  B --> C{Decision}
-  C --> D[Result one]
-  C --> E[Result two]
+  A[Usuário] --> B(Interface Streamlit)
+  B --> C{Processamento}
+  C -->|Gera| D[Markdown]
+  C -->|Renderiza| E[HTML/Reveal.js]
+  E -.-> A
 ```
 
-## 9. Considerações Finais
+### Código Fonte
+
+```python
+# Exemplo de código Python
+import streamlit as st
+
+def main():
+    st.write("Apresentação Gerada!")
+```
+
+:::
+
+## 11. Caixas de Destaque (Callouts)
+
+As "Callouts" são ótimas para destacar informações:
+
+::: {.callout-note}
+Esta é uma nota de lembrete simples.
+:::
+
+::: {.callout-tip}
+## Dica Importante
+Você pode colocar títulos nas callouts usando `## Título`.
+:::
+
+::: {.callout-important}
+Atenção para prazos e normas.
+:::
+
+## 12. Considerações Finais
 
 A ferramenta demonstra viabilidade técnica e potencial para auxiliar discentes na etapa final de seus cursos.
 """

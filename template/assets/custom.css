@@ -1,0 +1,493 @@
+/* Cores Oficiais IFS - Manual de Aplicação da Marca (Edição 2015) */
+:root {
+  --ifs-verde: #2f9e41;        /* RGB 50 160 65 | HEX #2f9e41 | Pantone 362 C */
+  --ifs-vermelho: #cd191e;     /* RGB 200 25 30 | HEX #cd191e | Pantone 187 C */
+  --ifs-preto: #000000;        /* RGB 0 0 0 | HEX #000000 | Process Black C */
+
+  --ifs-cinza-escuro: #2b2b2b;
+  --ifs-cinza-claro: #e6e6e6;
+
+  /* Aliases (mantidos por compatibilidade com estilos antigos) */
+  --ufs-amarelo: var(--ifs-verde);
+  --ufs-vermelho: var(--ifs-vermelho);
+  --ufs-azul: var(--ifs-verde);
+  --ufs-verde: var(--ifs-verde);
+  --ufs-cinza-escuro: var(--ifs-cinza-escuro);
+  --ufs-cinza-claro: var(--ifs-cinza-claro);
+
+  /* Ajustes de layout */
+  --ifs-footer-height: 32px;
+}
+
+/* Tipografia/legibilidade base */
+.reveal {
+  font-family: "Open Sans", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+}
+
+.reveal .slides {
+  text-rendering: optimizeLegibility;
+}
+
+.reveal .slides section:not(#title-slide):not(.end-slide) {
+  /* Evita que o conteúdo “entre” no rodapé fixo */
+  padding-bottom: calc(var(--ifs-footer-height) + 14px) !important;
+}
+
+.reveal h2 {
+  color: var(--ifs-verde);
+}
+
+.reveal ul,
+.reveal ol {
+  margin-top: 0.35em;
+}
+
+.reveal li {
+  margin: 0.18em 0;
+  line-height: 1.25;
+}
+
+/* Links mais visíveis */
+.reveal a {
+  color: var(--ifs-verde);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+}
+
+#title-slide a,
+.reveal .slides section.end-slide a {
+  color: #ffffff !important;
+}
+
+.reveal .slides section.title-slide {
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  max-width: none !important;
+  max-height: none !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+}
+
+#title-slide {
+  background-color: var(--ifs-verde) !important;
+  background-image: none !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  align-items: center !important;
+  text-align: center !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* Slide final no estilo da capa */
+.reveal .slides section.end-slide {
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  max-width: none !important;
+  max-height: none !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  background-color: var(--ifs-verde) !important;
+  background-image: none !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  align-items: center !important;
+  text-align: center !important;
+}
+
+.reveal .slides section.end-slide::before {
+  content: "";
+  display: block;
+  width: clamp(360px, 38vw, 580px);
+  height: clamp(100px, 14vh, 180px);
+  background-image: url('logo_IFS.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  margin-top: clamp(0.8rem, 2.2vh, 1.6rem);
+  margin-bottom: 2em;
+  filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.3));
+}
+
+.reveal .slides section.end-slide h1,
+.reveal .slides section.end-slide h2,
+.reveal .slides section.end-slide h3,
+.reveal .slides section.end-slide p,
+.reveal .slides section.end-slide span {
+  color: white !important;
+}
+
+.reveal .slides section.end-slide h2 {
+  font-size: clamp(1.6em, 4vw + 1em, 3.6em) !important;
+  font-family: 'Open Sans', sans-serif !important;
+  font-weight: 800 !important;
+  line-height: 1.1 !important;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.35);
+  margin: 0 0 0.6em 0 !important;
+}
+
+#title-slide::before {
+  content: "";
+  display: block;
+  width: clamp(360px, 38vw, 580px);
+  height: clamp(100px, 14vh, 180px);
+  background-image: url('logo_IFS.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  margin-top: clamp(0.8rem, 2.2vh, 1.6rem);
+  margin-bottom: 2em;
+  filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.3));
+}
+
+#title-slide .title {
+  /* Título muito longo: mantém dentro da margem sem estourar */
+  font-size: clamp(0.92em, 1.15vw + 0.62em, 1.35em) !important;
+  color: white !important;
+  font-family: 'Open Sans', sans-serif !important;
+  font-weight: 700 !important;
+  margin-bottom: 0.3em !important;
+  line-height: 1.10 !important;
+  max-width: 88vw !important;
+  padding: 0 2.5rem !important;
+  overflow-wrap: anywhere !important;
+  word-break: normal !important;
+  hyphens: auto !important;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.35);
+}
+
+#title-slide .subtitle {
+  font-size: clamp(0.85em, 0.9vw + 0.6em, 1.05em) !important;
+  color: white !important;
+  margin-top: 0.3em !important;
+  margin-bottom: 1.5em !important;
+  font-weight: 500 !important;
+  font-family: 'Open Sans', sans-serif !important;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}
+
+#title-slide .author,
+#title-slide .institute {
+  font-size: 1.1em !important;
+  color: white !important;
+  margin-top: -2em !important;
+  margin-bottom: 1.5em !important;
+  font-weight: 200 !important;
+  font-family: 'Open Sans', sans-serif !important;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.5) !important;
+}
+
+/* Garantir que todos os elementos da capa sejam brancos - todos os seletores possíveis */
+.reveal .slides section.title-slide .author,
+.reveal .slides section.title-slide .institute,
+.reveal .slides section.title-slide .date,
+.reveal .slides section.title-slide p,
+.reveal .slides section.title-slide h1.author,
+.reveal .slides section.title-slide h2.author,
+.reveal .slides section.title-slide h3.author,
+.reveal section.title-slide .author,
+.reveal section.title-slide .institute,
+.reveal section.title-slide .date,
+section.title-slide .author,
+section.title-slide .institute,
+section.title-slide .date,
+#title-slide p.author,
+#title-slide p.institute,
+#title-slide p.date,
+#title-slide h1.author,
+#title-slide h2.author,
+#title-slide h3.author,
+#title-slide h1.institute,
+#title-slide h2.institute,
+#title-slide h3.institute,
+.title-slide .author,
+.title-slide .institute,
+.title-slide .date,
+.reveal .slides .title-slide .author,
+.reveal .slides .title-slide .institute,
+.reveal .slides .title-slide .date {
+  color: white !important;
+  font-family: 'Open Sans', sans-serif !important;
+  font-weight: 500 !important;
+  font-size: 0.8em !important;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.5) !important;
+}
+
+.box {
+  margin-top: 10px;
+  margin-right: 10px;
+  border: 3px solid var(--ifs-verde);
+  padding: 15px;
+  font-size: 0.9em;
+  background-color: #f5f5f5;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.info-box {
+  margin-top: 10px;
+  margin-right: 10px;
+  border-left: 8px solid var(--ifs-verde);
+  padding-left: 20px;
+  padding-right: 10px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background-color: rgba(47, 158, 65, 0.08);
+  border-radius: 5px;
+}
+
+.highlight-box {
+  background-color: rgba(47, 158, 65, 0.12);
+  border-left: 5px solid var(--ifs-verde);
+  padding: 10px 15px;
+  margin: 10px 0;
+  border-radius: 5px;
+}
+
+.circle {
+  border-radius: 50%;
+  width: 1.3em;
+  height: 1.3em;
+  line-height: 1.3em;
+  padding: 3px;
+  display: inline-block;
+  background: var(--ifs-verde);
+  color: white;
+  text-align: center;
+  font-weight: bold;
+  font-family: 'Open Sans', sans-serif;
+  vertical-align: middle;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.section-header {
+  background: linear-gradient(90deg, var(--ifs-verde) 0%, var(--ifs-vermelho) 100%);
+  color: white;
+  font-size: 0.5em;
+  padding: 12px 24px;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 700;
+  vertical-align: middle;
+  display: inline-block;
+  border-radius: 5px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.columns {
+  display: flex;
+  gap: 20px;
+}
+
+.column {
+  flex: 1;
+}
+
+.fragment.highlight-current-green.visible.current-fragment {
+  background-color: #c8e6c9;
+}
+
+.small-text {
+  font-size: 0.8em;
+}
+
+.smaller-text {
+  font-size: 0.7em;
+}
+
+.diagram-scroll {
+  max-height: 80vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  border: 2px solid var(--ufs-verde);
+  padding: 15px;
+  border-radius: 10px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.slide-scroll {
+  max-height: 70vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 10px;
+}
+
+/* Imagens dentro de áreas scroll */
+.diagram-scroll img,
+.slide-scroll img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Tabelas (principalmente nas áreas scroll) */
+.reveal table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.reveal table th {
+  background: var(--ifs-verde);
+  color: white;
+}
+
+.reveal table th,
+.reveal table td {
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  padding: 8px 10px;
+  vertical-align: top;
+}
+
+.slide-scroll table {
+  font-size: 0.75em;
+}
+
+.diagram-scroll::-webkit-scrollbar {
+  width: 10px;
+}
+
+.diagram-scroll::-webkit-scrollbar-track {
+  background: var(--ifs-cinza-claro);
+  border-radius: 5px;
+}
+
+.diagram-scroll::-webkit-scrollbar-thumb {
+  background: var(--ifs-verde);
+  border-radius: 5px;
+  border: 2px solid var(--ifs-cinza-claro);
+}
+
+.diagram-scroll::-webkit-scrollbar-thumb:hover {
+  background: var(--ifs-vermelho);
+}
+
+.slide-scroll::-webkit-scrollbar {
+  width: 10px;
+}
+
+.slide-scroll::-webkit-scrollbar-track {
+  background: var(--ifs-cinza-claro);
+  border-radius: 5px;
+}
+
+.slide-scroll::-webkit-scrollbar-thumb {
+  background: var(--ifs-verde);
+  border-radius: 5px;
+  border: 2px solid var(--ifs-cinza-claro);
+}
+
+.slide-scroll::-webkit-scrollbar-thumb:hover {
+  background: var(--ifs-vermelho);
+}
+
+/* Logo positioning and styling */
+.reveal .slide-logo {
+  display: none !important;
+}
+
+/* Footer styling with IFS branding */
+.reveal .footer {
+  background-color: var(--ifs-verde) !important;
+  color: white !important;
+  font-family: 'Open Sans', sans-serif !important;
+  font-size: 0.5em !important;
+  font-weight: 500 !important;
+  padding: 3px 10px !important;
+  border-top: 2px solid var(--ifs-vermelho) !important;
+  box-shadow: 0 -1px 3px rgba(0,0,0,0.1) !important;
+  position: fixed !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  margin: 0 !important;
+  display: grid !important;
+  grid-template-columns: 70px 1fr 70px !important;
+  align-items: center !important;
+  gap: 10px !important;
+  z-index: 1000 !important;
+  height: auto !important;
+  min-height: var(--ifs-footer-height) !important;
+}
+
+.reveal .footer p {
+  margin: 0 !important;
+}
+
+.reveal .footer::before {
+  content: "";
+  display: inline-block;
+  width: 70px;
+  height: 22px;
+  background-image: url('logo_IFS.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: left center;
+}
+
+/* Slide number styling - caixinha no rodapé */
+.reveal .slide-number {
+  position: fixed !important;
+  top: auto !important;
+  bottom: 5px !important;
+  right: 15px !important;
+  left: auto !important;
+  background-color: var(--ifs-verde) !important;
+  color: white !important;
+  font-family: 'Open Sans', sans-serif !important;
+  font-weight: 700 !important;
+  padding: 3px 8px !important;
+  font-size: 0.6em !important;
+  border-radius: 4px !important;
+  z-index: 2000 !important;
+}
+
+/* Remover estilos de title-slide dos slides de seção (section-header) */
+.reveal .slides section.title-slide.slide:not(#title-slide) {
+  margin: 0 !important;
+  padding: 0 !important;
+  width: auto !important;
+  height: auto !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
+  left: auto !important;
+  transform: none !important;
+}
+
+section.title-slide.slide.level1:has(.section-header) {
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: flex-start !important;
+  align-items: center !important;
+  padding: 40px 40px !important;
+  height: 100% !important;
+}
+
+section.title-slide.slide.level1:has(.section-header) h1 {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  flex-shrink: 0 !important;
+  margin-right: auto !important;
+}
+
+section.title-slide.slide.level1:has(.section-header) div {
+  margin-top: auto !important;
+  margin-bottom: 40px !important;
+  flex-shrink: 0 !important;
+}
+
+/* Classe customizada para título reduzido - 30% menor que r-fit-text */
+.obrigado-fit-text {
+  font-size: clamp(1em, 4vw, 3.5em) !important;
+  line-height: 1.2 !important;
+  font-weight: bold !important;
+  display: block !important;
+  margin: 0.5em 0 !important;
+  text-align: center !important;
+}

@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyd
+*.pyo
+*.pypi
+*.egg-info/
+.eggs/
+
+# Virtualenv
+.venv/
+venv/
+ENV/
+
+# Streamlit
+.streamlit/
+
+# OS / Editor
+.DS_Store
+Thumbs.db
+.vscode/
+
+# Quarto / outputs
+.quarto/
+_site/
+*.html
+*.pdf
+*.log
+
+# Temp/archives
+*.zip
+*.tar.gz

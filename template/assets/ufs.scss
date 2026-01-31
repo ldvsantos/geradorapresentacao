@@ -1,0 +1,130 @@
+/*-- scss:defaults --*/
+
+/* Cores Oficiais IFS - Manual de Aplicação da Marca (Edição 2015) */
+$ifs-verde: #2f9e41;            /* RGB 50 160 65 | HEX #2f9e41 | Pantone 362 C */
+$ifs-vermelho: #cd191e;         /* RGB 200 25 30 | HEX #cd191e | Pantone 187 C */
+$ifs-preto: #000000;            /* RGB 0 0 0 | HEX #000000 | Process Black C */
+
+$ifs-cinza-escuro: #2b2b2b;
+$ifs-cinza-claro: #e6e6e6;
+
+$body-bg: #ffffff;
+$body-color: $ifs-cinza-escuro;
+$link-color: $ifs-verde;
+$presentation-heading-color: $ifs-verde;
+$presentation-heading-font: 'Open Sans', sans-serif;
+$presentation-font-size-root: 40px;
+
+/* Fonte Open Sans (manual IFS) */
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap');
+
+/*-- scss:rules --*/
+
+.reveal {
+  font-family: 'Open Sans', 'Helvetica Neue', Arial, sans-serif;
+}
+
+.reveal h1,
+.reveal h2,
+.reveal h3,
+.reveal h4,
+.reveal h5,
+.reveal h6 {
+  color: $presentation-heading-color;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 700;
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+.reveal h1 {
+  font-size: 2.2em;
+  color: $ifs-verde;
+}
+
+.reveal h2 {
+  font-size: 1.6em;
+  color: $ifs-verde;
+}
+
+.reveal h3 {
+  font-size: 1.3em;
+  color: $ifs-verde;
+}
+
+.reveal .slide blockquote {
+  border-left: 5px solid $ifs-verde;
+  padding-left: 1em;
+  background-color: rgba(47, 158, 65, 0.08);
+}
+
+.reveal strong,
+.reveal b {
+  color: $ifs-vermelho;
+  font-weight: 600;
+}
+
+.reveal a {
+  color: $ifs-verde;
+  text-decoration: none;
+}
+
+.reveal a:hover {
+  color: $ifs-vermelho;
+  text-decoration: underline;
+}
+
+/* Forçar estilos da capa - author, institute e date */
+.reveal .slides section.title-slide .author,
+.reveal .slides section.title-slide .institute,
+.reveal .slides section.title-slide .date,
+#title-slide .author,
+#title-slide .institute,
+#title-slide .date {
+  color: white !important;
+  font-family: 'Open Sans', sans-serif !important;
+  font-weight: 500 !important;
+  font-size: 1.1em !important;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.5) !important;
+}
+
+/* Sobrescrever qualquer h1, h2, h3 que seja author ou institute */
+.reveal .slides section.title-slide h1.author,
+.reveal .slides section.title-slide h2.author,
+.reveal .slides section.title-slide h3.author,
+.reveal .slides section.title-slide h1.institute,
+.reveal .slides section.title-slide h2.institute,
+.reveal .slides section.title-slide h3.institute {
+  color: white !important;
+  font-family: 'Open Sans', sans-serif !important;
+  font-weight: 500 !important;
+  font-size: 1.1em !important;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.5) !important;
+}
+
+/* Classes específicas do Quarto para author e institute */
+.reveal section.title-slide .quarto-title-authors,
+.reveal section.title-slide .quarto-title-author,
+.reveal section.title-slide .quarto-title-author-name,
+.reveal section.title-slide .quarto-title-affiliation,
+#title-slide .quarto-title-authors,
+#title-slide .quarto-title-author,
+#title-slide .quarto-title-author-name,
+#title-slide .quarto-title-affiliation {
+  color: white !important;
+  font-family: 'Open Sans', sans-serif !important;
+  font-weight: 500 !important;
+  font-size: 0.9em !important;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.5) !important;
+}
+
+/* Estilo para a data */
+.reveal section.title-slide .date,
+#title-slide .date,
+.reveal section.title-slide .quarto-title-meta-contents {
+  color: white !important;
+  font-family: 'Open Sans', sans-serif !important;
+  font-weight: 300 !important;
+  font-size: 0.55em !important;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.5) !important;
+}

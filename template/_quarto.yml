@@ -1,0 +1,20 @@
+project:
+  type: default
+  output-dir: _site
+
+format:
+  revealjs:
+    logo: assets/logo_IFS.png
+    footer: "IFS | Apresentação do TCC"
+    slide-number: true
+    theme: [simple, "./assets/ufs.scss"]
+    controls: true
+    width: 1280
+    height: 720
+    css: "./assets/custom.css"
+    transition: slide
+    background-transition: fade
+    preview-links: auto
+
+execute:
+  echo: false

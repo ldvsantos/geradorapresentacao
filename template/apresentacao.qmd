@@ -1,0 +1,250 @@
+---
+title: "DESENVOLVIMENTO DE UM PROTÓTIPO DE SISTEMA PARA APOIO ÀS ATIVIDADES PSICOPEDAGÓGICAS NO INSTITUTO FEDERAL DE SERGIPE"
+subtitle: "Discente: Cristilane Gois de Souza<br>Orientador: Telmo Oliveira de Jesus<br>Coorientadora: Catuxe Varjão de Santana Oliveira"
+institute: "Instituto Federal de Sergipe"
+date: 2026-01-30
+date-format: "D [de] MMMM [de] YYYY"
+lang: pt-BR
+title-slide-attributes:
+  class: title-slide
+---
+
+## Contextualização do Estudo
+
+- Psicopedagogia nas instituições escolares
+- Educação inclusiva 
+- Atendimento psicopedagógico no Instituto Federal de Sergipe-IFS, Campus Lagarto
+- Atuação do Núcleo de Atendimento às Pessoas com Necessidades Específicas-NAPNE
+- Necessidade de organização das informações
+
+
+---
+
+## Problema Investigado
+
+- Registros psicopedagógicos realizados de forma manual
+- Informações dispersas
+- Dificuldade no acompanhamento da evolução dos alunos
+- Fragilidade na comunicação entre:
+  - Instituição
+  - Equipe multiprofissional
+  - Família
+
+
+---
+
+## Objetivo Geral
+
+- Desenvolver um protótipo de sistema para apoiar as atividades psicopedagógicas no IFS, contribuindo para a organização dos atendimentos, o acompanhamento dos estudantes e o fortalecimento da comunicação entre instituição, psicopedagogo e família.
+
+---
+
+
+## Objetivos Específicos
+
+- Levantar as necessidades do atendimento psicopedagógico institucional
+- Definir as funcionalidades do sistema de acordo com essas necessidades
+- Modelar o sistema por meio de diagramas de caso de uso, sequência e atividades.
+- Desenvolver um protótipo que auxilie no registro e acompanhamento dos atendimentos psicopedagógicos.
+- Contribuir para a organização das informações e a comunicação com os pais ou responsáveis.
+
+---
+
+## Metodologia
+::: {.slide-scroll}
+::: {.info-box}
+- Natureza da pesquisa: Aplicada
+- Abordagem: Qualitativa
+- Método: Estudo de Caso
+- Contexto de aplicação:
+  - Instituto Federal de Sergipe – IFS, Campus Lagarto
+  - Núcleo de Atendimento às Pessoas com Necessidades Específicas (NAPNE)
+- Foco:
+  - Atendimento psicopedagógico institucional
+  - Organização dos fluxos de trabalho
+  - Sistematização das informações dos alunos
+:::
+:::
+
+---
+
+## Coleta de Dados
+
+- Questionário aplicado
+- Reuniões com a psicopedagoga do NAPNE
+- Compreensão de:
+  - Rotinas de atendimento
+  - Fluxos de trabalho
+  - Demandas institucionais
+
+---
+
+## Plano Educacional Individualizado(PEI)
+
+- Construção colaborativa
+- Participação da equipe multiprofissional
+- Definição de:
+  - Objetivos
+  - Metas
+  - Intervenções
+  - Alinhamento à educação inclusiva
+
+---
+
+## Levantamento de Requisitos
+
+- Requisitos Funcionais
+- Requisitos Não Funcionais
+- Necessidades identificadas no contexto institucional
+- Base para o desenvolvimento do sistema
+
+
+---
+
+## Requisitos Funcionais
+::: {.slide-scroll}
+| Código | Requisitos Funcionais | Descrição |
+|-------------|-------------|-------------|
+| RF01      | Cadastrar aluno     | O sistema deve permitir o cadastro de alunos, registrando suas informações pessoais e educacionais.|
+| RF02      | Visualizar dados do aluno      | O sistema deve permitir a visualização dos dados completos dos alunos cadastrados.|
+| RF05      | Listar e filtrar alunos      | O sistema deve permitir a listagem de alunos cadastrados, com aplicação de filtros para facilitar a busca. |
+| RF12      | Gerar documentos e encaminhamentos      | O sistema deve permitir a geração de relatórios, encaminhamentos e termos relacionados ao atendimento do aluno.|
+| RF14      | Registrar anamnese     | O sistema deve permitir o registro da anamnese do aluno e do responsável. |
+| RF16     | Agendar atendimento      | O sistema deve permitir o agendamento de atendimentos.|
+| RF22     | Notificar equipe multiprofissional      | O sistema deve permitir o envio de notificações à equipe multiprofissional sobre o andamento e a conduta do aluno.|
+| RF25      | Registrar devolutivas     | O sistema deve permitir o registro de devolutivas clínicas destinadas às famílias e à equipe multiprofissional. |
+| RF28     | Construir PEI      | O sistema deve permitir construir PEI em parceria com a equipe Multiprofissional.|
+
+:::
+
+---
+
+## Requisitos Não Funcionais
+
+::: {.slide-scroll}
+| Código | Requisitos Não Funcionais | Descrição |
+|-------------|-------------|-------------|
+| RNF01    | Segurança     | O sistema deve garantir autenticação de usuários por meio de login e senha.|
+| RNF04      | Usabilidade     | O sistema deve possuir interface intuitiva e de fácil navegação.|
+| RNF06      | Desempenho      | O sistema deve responder às requisições dos usuários em tempo adequado. |
+| RNF08      | Confiabilidade    |O sistema deve evitar a perda de dados em caso de falhas.|
+| RNF11      | Manutenibilidade     | O sistema deve permitir manutenção e atualização sem comprometer seu funcionamento. |
+| RNF12     | Legalidade      | O sistema deve estar em conformidade com a legislação vigente sobre proteção de dados pessoais.|
+
+:::
+
+---
+
+## Modelagem do Sistema
+
+::: {.info-box}
+- Utilização da UML
+- Diagramas desenvolvidos:
+  - Caso de Uso
+  - Sequência
+  - Atividade
+- Apoio à compreensão das funcionalidades do sistema
+:::
+
+---
+
+## Diagrama de Caso de Uso
+
+::: {.diagram-scroll}
+[![](Figuras/diagrama-caso-de-uso.jpg){width="150%"}](Figuras/diagrama-caso-de-uso.jpg){target="_blank" data-preview-link="false"}
+:::
+
+---
+
+## Diagrama de Sequência - Gerenciar Prontuário do Aluno
+
+::: {.diagram-scroll}
+[![](Figuras/diagrama-sequencia-prontuario.png){width="100%"}](Figuras/diagrama-sequencia-prontuario.png){target="_blank" data-preview-link="false"}
+:::
+
+---
+
+## Diagrama de Sequência - Gerar Relatório
+
+::: {.diagram-scroll}
+[![](Figuras/diagrama-sequencia-relatorio.png){width="100%"}](Figuras/diagrama-sequencia-relatorio.png){target="_blank" data-preview-link="false"}
+:::
+
+---
+
+## Diagrama de Atividade
+
+::: {.diagram-scroll}
+[![](Figuras/diagrama-atividade-prontuario.jpg){width="100%"}](Figuras/diagrama-atividade-prontuario.jpg){target="_blank" data-preview-link="false"}
+:::
+
+---
+
+## Protótipo Desenvolvido
+
+::: columns
+::: column
+::: {.info-box}
+- Cadastro de alunos
+- Registro e acompanhamento dos atendimentos
+- Gerenciamento do prontuário psicopedagógico
+- Construção colaborativa do PEI
+- Comunicação com os responsáveis
+:::
+:::
+
+::: column
+::: {.highlight-box}
+Protótipo desenvolvido no Figma:
+
+<https://sheen-haze-86073248.figma.site>
+:::
+:::
+:::
+
+
+---
+
+## Considerações Finais
+
+- Desenvolvimento de um protótipo de sistema voltando ao apoio do atendimento psicopedagógico do IFS
+- Apoio à prática psicopedagógica
+- Fortalecimento das ações do NAPNE
+- Promoção de práticas integradas e sistemáticas
+- Alinhamento às diretrizes da educação inclusiva
+
+
+---
+
+## Referências Bibliográficas
+
+::: {.slide-scroll}
+- SOUZA, Y. A. F. Psicopedagogia e processos de aprendizagem no contexto escolar. Revista Brasileira de Psicopedagogia, v. 39, n. 121, p. 22–35, 2023. 
+- CAMARA, A. L. Psicopedagogia institucional e organização do suporte pedagógico. Revista Psicopedagogia, v. 40, n. 123, p. 85–96, 2023. BRASIL. Ministério da Educação. Política Nacional de Educação Especial na Perspectiva da Educação Inclusiva. Brasília: MEC, 2020. 
+- MANTOAN, Maria Teresa Eglér. Inclusão escolar: pontos e contrapontos. São Paulo: Summus, 2003. 
+- INSTITUTO FEDERAL DE SERGIPE. Resolução CS/IFS nº 76, de 06 de maio de 2021. Aprova o regulamento interno do Núcleo de Atendimento às Pessoas com Necessidades Específicas – NAPNE. Aracaju: IFS, 2021a. 
+- INSTITUTO FEDERAL DE SERGIPE. Resolução CS/IFS nº 79, de 21 de maio de 2021. Dispõe sobre o regulamento de ações pedagógicas inclusivas voltadas às pessoas com necessidades específicas no âmbito do IFS. Aracaju: IFS, 2021b.
+- COSTA, M. A.; CUNHA, M. C.; COSTA, L. F. Psicopedagogia institucional: práticas preventivas no contexto escolar. Revista Educação em Foco, v. 25, n. 2, p. 215–230, 2020. 
+- INEP – INSTITUTO NACIONAL DE ESTUDOS E PESQUISAS EDUCACIONAIS ANÍSIO TEIXEIRA. Censo Escolar da Educação Básica 2024: notas estatísticas. Brasília: INEP, 2025. 
+- SILVA, A. P.; OLIVEIRA, M. R. Atuação multiprofissional no contexto educacional inclusivo. Revista Educação & Sociedade, v. 42, e023045, 2021. BRITO, R. S. et al. Trabalho multiprofissional na educação inclusiva: desafios e possibilidades. Revista Brasileira de Educação Especial, v. 29, p. 1–18, 2023.
+- OECD – ORGANISATION FOR ECONOMIC CO-OPERATION AND DEVELOPMENT. Education at a Glance 2023: OECD indicators. Paris: OECD Publishing, 2023.
+- MORAN, José. Modelos mais flexíveis na educação básica. In: SBERGA, Adair Aparecida; GUEDES, Roberta Valéria (org.). Ensino híbrido e outros saberes pedagógicos. Brasília: Associação Nacional de Educação Católica do Brasil (ANEC), 2021.
+- SILVA, R. F.; SANTOS, L. M. Sistemas informatizados no apoio psicopedagógico escolar. Revista Tecnologias na Educação, v. 15, n. 1, p. 45–60, 2023.
+- SOMMERVILLE, I. Engenharia de software. 10. ed. São Paulo: Pearson, 2011.
+- SOMMERVILLE, I. Software engineering. 11. ed. Boston: Pearson, 2021.
+- BRASIL. Lei nº 13.709, de 14 de agosto de 2018. Lei Geral de Proteção de Dados Pessoais (LGPD). Diário Oficial da União, Brasília, DF, 15 ago. 2018. 
+- OMG – OBJECT MANAGEMENT GROUP. Unified Modeling Language (UML), Version 2.5.1. Needham: OMG, 2017. 
+BOOCH, G.; RUMBAUGH, J.; JACOBSON, I. The Unified Modeling Language user guide. 2. ed. Boston: Addison-Wesley, 2005.
+ASTAH. Astah UML. Versão estudante. [s.l.]: Change Vision, s.d. Disponível em: https://astah.net. Acesso em: 25 jan. 2026.
+- FIGMA. Figma: ferramenta de design de interfaces e prototipação colaborativa. Disponível em: . Acesso em: 27 jan. 2026.
+- FIGMA. Figma Maker: criação de protótipos interativos. Disponível em: . Acesso em: 27 jan. 2026. 
+- PRESSMAN, R. S.; MAXIM, B. R. Engenharia de software: uma abordagem profissional. 9. ed. Porto Alegre: AMGH, 2021.
+- BOOCH, G.; RUMBAUGH, J.; JACOBSON, I. UML: guia do usuário. 2. ed. Rio de Janeiro: Elsevier, 2012.
+  
+:::
+
+---
+
+## Obrigada! {.end-slide}
+
+<span class="small-text">Discente: Cristilane Gois de Souza<br>Orientador: Telmo Oliveira de Jesus<br>Coorientadora: Catuxe Varjão de Santana Oliveira</span>

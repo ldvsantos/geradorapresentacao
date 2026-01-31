@@ -65,7 +65,8 @@ def setup_quarto_linux():
     url = f"https://github.com/quarto-dev/quarto-cli/releases/download/v{QUARTO_VERSION}/quarto-{QUARTO_VERSION}-linux-amd64.tar.gz"
     
     try:
-        response = requests.get(url, stream=True, timeout=30)
+        # Aumentando timeout para 120s para evitar falhas em conexões lentas
+        response = requests.get(url, stream=True, timeout=120)
         if response.status_code == 200:
             # Limpa dir anterior se existir (reinstalação limpa)
             if INSTALL_DIR.exists():
@@ -81,6 +82,10 @@ def setup_quarto_linux():
             with tarfile.open(tar_path, "r:gz") as tar:
                 tar.extractall(path=INSTALL_DIR)
             
+            # Limpeza do arquivo tar.gz após extração
+            if tar_path.exists():
+                os.remove(tar_path)
+
             if QUARTO_EXEC.exists():
                 os.environ["PATH"] = str(QUARTO_BIN_DIR) + os.pathsep + os.environ["PATH"]
                 QUARTO_EXEC.chmod(0o755) 
@@ -89,9 +94,6 @@ def setup_quarto_linux():
                 # Debug: listar pastas criadas
                 found = list(INSTALL_DIR.glob("**/*"))
                 return f"Falha: executável não encontrado após extração. Conteúdo de {INSTALL_DIR}: {found}"
-            
-            if tar_path.exists():
-                os.remove(tar_path)
         else:
             return f"Erro HTTP {response.status_code} ao baixar Quarto."
     except Exception as e:

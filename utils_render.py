@@ -52,7 +52,10 @@ def setup_quarto_linux():
             subprocess.run([str(QUARTO_EXEC), "--version"], check=True, capture_output=True)
             return "Quarto já instalado e verificado."
         except Exception as e:
-            return f"Quarto existe mas falhou verificação: {e}"
+            # Se falhar, removemos para tentar instalar novamente na próxima execução (ou agora se continuasse)
+            # Mas como estamos no return, vamos apenas avisar e limpar.
+            shutil.rmtree(INSTALL_DIR, ignore_errors=True)
+            return f"Quarto corrompido detectado e removido. Recarregue a página para tentar reinstalar. Erro: {e}"
 
     # Se system quarto existir
     if shutil.which('quarto'):
